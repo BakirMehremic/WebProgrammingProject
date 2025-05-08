@@ -1,4 +1,8 @@
 <?php 
+
+require_once __DIR__ . '/BaseDao.php';
+
+
 class CartProductsDao extends BaseDao {
     public function __construct() {
         parent::__construct("cart_products");
