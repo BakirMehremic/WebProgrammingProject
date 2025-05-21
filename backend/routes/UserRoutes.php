@@ -10,6 +10,8 @@
  * )
  */
 Flight::route('GET /user/email/@email', function($email){
+    Flight::auth_middleware()->authorizeRole(Roles::USER);
+    $location = Flight::request()->query['location'] ?? null;
     Flight::json(Flight::userService()->getByEmail($email));
 });
 
