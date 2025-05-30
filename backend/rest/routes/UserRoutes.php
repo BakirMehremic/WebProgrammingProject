@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../data/Roles.php';
 
 /**
  * @OA\Get(
@@ -10,6 +11,8 @@
  * )
  */
 Flight::route('GET /user/email/@email', function($email){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+    $location = Flight::request()->query['location'] ?? null;
     Flight::json(Flight::userService()->getByEmail($email));
 });
 
@@ -32,6 +35,7 @@ Flight::route('GET /user/email/@email', function($email){
  * )
  */
 Flight::route('POST /user', function(){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $data = Flight::request()->data->getData();
     Flight::json(Flight::userService()->createUser($data['name'], $data['email'], $data['password'], $data['role'] ?? 'customer'));
 });
@@ -54,6 +58,7 @@ Flight::route('POST /user', function(){
  * )
  */
 Flight::route('PUT /user/@id', function($id){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $data = Flight::request()->data->getData();
     Flight::json(Flight::userService()->editUser($id, $data['name'], $data['email'], $data['role']));
 });
@@ -68,6 +73,7 @@ Flight::route('PUT /user/@id', function($id){
  * )
  */
 Flight::route('DELETE /user/@id', function($id){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     Flight::json(Flight::userService()->deleteUser($id));
 });
 

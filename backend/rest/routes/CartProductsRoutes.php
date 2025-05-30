@@ -70,8 +70,22 @@ Flight::route('PUT /cart-product/@id', function($id){
  *     @OA\Response(response=200, description="Deleted")
  * )
  */
-Flight::route('DELETE /cart-product/@id', function($id){
-    Flight::json(Flight::cartProductsService()->deleteCartProduct($id));
+Flight::route('GET /routes', function() {
+    // Flight stores routes in Flight::$routes property (an array)
+    // but it’s private, so we access it via reflection:
+
+    $reflection = new ReflectionClass('Flight');
+    $prop = $reflection->getProperty('routes');
+    $prop->setAccessible(true);
+    $routes = $prop->getValue();
+
+    $list = [];
+    foreach ($routes as $method => $routeList) {
+        foreach ($routeList as $route) {
+            $list[] = strtoupper($method) . ' ' . $route['route'];
+        }
+    }
+    echo '<pre>' . print_r($list, true) . '</pre>';
 });
 
 ?>
